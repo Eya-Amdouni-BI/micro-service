@@ -3,6 +3,7 @@ package tn.esprit.productservice.controllers;
 
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.productservice.entities.Product;
 import tn.esprit.productservice.services.ProductService;
@@ -37,6 +38,7 @@ public class ProductController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public Product create(@RequestBody Product product) {
         Product saved = productService.save(product);
         Map<String, Object> meta = new HashMap<>();
@@ -47,6 +49,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Product> update(@PathVariable Long id, @RequestBody Product product) {
         return productService.findById(id)
                 .map(existing -> {
@@ -66,6 +69,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         if (productService.findById(id).isPresent()) {
             productService.deleteById(id);

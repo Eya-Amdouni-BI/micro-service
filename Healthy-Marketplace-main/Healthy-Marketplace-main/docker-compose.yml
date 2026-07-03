@@ -288,8 +288,11 @@ services:
       - "8090:8090"
     environment:
       - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+      - KEYCLOAK_URL=http://keycloak:8080
+      - KEYCLOAK_REALM=healthy-market-realm
     depends_on:
       - rabbitmq
+      - keycloak
     networks:
       - healthy-market-network
     restart: unless-stopped

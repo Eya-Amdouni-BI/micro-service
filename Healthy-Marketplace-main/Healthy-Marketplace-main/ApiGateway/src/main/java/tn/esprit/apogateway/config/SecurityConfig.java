@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
@@ -47,6 +48,14 @@ public class SecurityConfig {
                                 "/webjars/**", 
                                 "/swagger-resources/**"
                         ).permitAll()
+                        .pathMatchers(HttpMethod.POST, "/api/products/**", "/api/categories/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.PUT, "/api/products/**", "/api/categories/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.DELETE, "/api/products/**", "/api/categories/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.PUT, "/api/orders/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.DELETE, "/api/orders/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.DELETE, "/api/reviews/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.PUT, "/api/reports/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.DELETE, "/api/reports/**").hasRole("ADMIN")
                         .anyExchange().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2

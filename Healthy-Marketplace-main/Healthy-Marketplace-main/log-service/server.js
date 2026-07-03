@@ -1,13 +1,45 @@
 const express = require('express');
 const amqp = require('amqplib');
 const cors = require('cors');
+const { expressjwt: jwt } = require('express-jwt');
+const jwksRsa = require('jwks-rsa');
 
 const PORT = process.env.PORT || 8090;
 const RABBITMQ_URL = process.env.RABBITMQ_URL || 'amqp://guest:guest@rabbitmq:5672';
+const KEYCLOAK_URL = process.env.KEYCLOAK_URL || 'http://localhost:8080';
+const KEYCLOAK_REALM = process.env.KEYCLOAK_REALM || 'healthy-market-realm';
 const EXCHANGE = 'service.logs';
 const ROUTING_KEY = 'service.log';
 const LOG_QUEUE = 'service.logs.queue';
 const MAX_LOG_ENTRIES = 250;
+
+const jwtCheck = jwt({
+  secret: jwksRsa.expressJwtSecret({
+    cache: true,
+    rateLimit: true,
+    jwksRequestsPerMinute: 10,
+    jwksUri: `${KEYCLOAK_URL}/realms/${KEYCLOAK_REALM}/protocol/openid-connect/certs`
+  }),
+  issuer: `${KEYCLOAK_URL}/realms/${KEYCLOAK_REALM}`,
+  algorithms: ['RS256'],
+  getToken: (req) => {
+    if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+      return req.headers.authorization.split(' ')[1];
+    }
+    if (req.query.access_token) {
+      return req.query.access_token;
+    }
+    return null;
+  }
+});
+
+const adminOnly = (req, res, next) => {
+  const roles = req.auth?.realm_access?.roles;
+  if (Array.isArray(roles) && roles.includes('admin')) {
+    return next();
+  }
+  return res.status(403).json({ error: 'Access denied' });
+};
 
 const app = express();
 app.use(cors());
@@ -75,11 +107,11 @@ const publishLog = async (service, level, message, meta = {}) => {
   return payload;
 };
 
-app.get('/logs', (_req, res) => {
+app.get('/logs', jwtCheck, adminOnly, (_req, res) => {
   res.json(logs.slice().reverse());
 });
 
-app.get('/logs/stream', (_req, res) => {
+app.get('/logs/stream', jwtCheck, adminOnly, (req, res) => {
   res.set({
     'Content-Type': 'text/event-stream',
     'Cache-Control': 'no-cache',

@@ -1,6 +1,7 @@
 package tn.esprit.reviewreportservice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.reviewreportservice.entity.Report;
 import tn.esprit.reviewreportservice.entity.ReportStatus;
@@ -67,12 +68,14 @@ public class ReportController {
     }
 
     @PatchMapping("/{id}/status")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Update report status", description = "Update the status of a given report (OPEN, IN_PROGRESS, RESOLVED)")
     public Report updateReportStatus(@PathVariable Long id, @RequestParam ReportStatus status) {
         return reportService.updateReportStatus(id, status);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Delete report", description = "Delete a report by its ID")
     public void deleteReport(@PathVariable Long id) {
         reportService.deleteReport(id);

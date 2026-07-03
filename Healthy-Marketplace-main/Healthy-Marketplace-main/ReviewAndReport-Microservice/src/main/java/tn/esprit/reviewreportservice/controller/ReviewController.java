@@ -1,6 +1,7 @@
 package tn.esprit.reviewreportservice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.reviewreportservice.entity.Review;
 import tn.esprit.reviewreportservice.service.ReviewService;
@@ -74,6 +75,7 @@ public class ReviewController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Delete a review", description = "Deletes an existing review by its ID")
     public void deleteReview(@PathVariable Long id) {
         reviewService.deleteReview(id);

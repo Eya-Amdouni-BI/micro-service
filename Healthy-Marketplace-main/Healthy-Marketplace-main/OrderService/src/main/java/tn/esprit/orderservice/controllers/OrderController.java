@@ -3,6 +3,7 @@ package tn.esprit.orderservice.controllers;
 
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.orderservice.entities.Order;
 import tn.esprit.orderservice.entities.Payment;
@@ -60,6 +61,7 @@ public class OrderController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Order> update(@PathVariable Long id, @RequestBody Order incomingOrder) {
         return orderService.findById(id)
                 .map(existing -> {
@@ -105,6 +107,7 @@ public class OrderController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         if (orderService.findById(id).isPresent()) {
             orderService.deleteById(id);
