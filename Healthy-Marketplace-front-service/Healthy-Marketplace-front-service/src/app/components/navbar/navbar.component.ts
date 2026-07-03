@@ -23,8 +23,10 @@ export class NavbarComponent implements OnInit {
     { path: '/about', label: 'About', fragment: 'benefits' },
     { path: '/forum', label: 'Forum' },
     { path: '/reviews', label: 'Reviews' },
-    { path: '/logs', label: 'Logs' },
     { path: '/delivery', label: 'Delivery' }
+  ];
+  adminMenuItems = [
+    { path: '/logs', label: 'Logs' }
   ];
 cartItemCount: any;
 
@@ -43,8 +45,11 @@ async ngOnInit(): Promise<void> {
       const profile = await this.authService.getUserProfile();
       this.username = profile.username;
       console.log('Logged in username:', this.username);
+      if (this.authService.isAdmin()) {
+        this.menuItems.push(...this.adminMenuItems);
+      }
     }
-        this.loadCart();
+    this.loadCart();
 
   }
 

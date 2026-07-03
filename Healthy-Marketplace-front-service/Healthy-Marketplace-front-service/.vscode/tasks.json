@@ -1,8 +1,12 @@
 {
+  // VS Code task definitions for running and testing the Angular frontend
+  // Comments are allowed in this JSONC file.
   // For more information, visit: https://go.microsoft.com/fwlink/?LinkId=733558
   "version": "2.0.0",
+  // Tasks for Angular development and testing. Use the VS Code Run Task command to execute.
   "tasks": [
     {
+      "label": "Angular Start",
       "type": "npm",
       "script": "start",
       "isBackground": true,
@@ -21,9 +25,11 @@
       }
     },
     {
+      "label": "Angular Test",
       "type": "npm",
       "script": "test",
       "isBackground": true,
+      // Runs Karma unit tests for the Angular frontend
       "problemMatcher": {
         "owner": "typescript",
         "pattern": "$tsc",

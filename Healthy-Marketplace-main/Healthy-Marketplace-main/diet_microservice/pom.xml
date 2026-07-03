@@ -16,7 +16,9 @@
     <description>diet_microservice</description>
 
     <properties>
+        <!-- Java 17 runtime for the diet microservice -->
         <java.version>17</java.version>
+        <!-- Spring Cloud dependency BOM version -->
         <spring-cloud.version>2023.0.1</spring-cloud.version>
     </properties>
 

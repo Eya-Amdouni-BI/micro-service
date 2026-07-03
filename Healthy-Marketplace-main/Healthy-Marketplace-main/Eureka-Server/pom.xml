@@ -2,6 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <!-- Parent POM manages Spring Boot dependencies and plugins for the Eureka server -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -27,9 +28,12 @@
         <url/>
     </scm>
     <properties>
+        <!-- Java version for compiling the Eureka server -->
         <java.version>17</java.version>
+        <!-- Spring Cloud BOM version used by the Eureka server -->
         <spring-cloud.version>2025.0.1</spring-cloud.version>
     </properties>
+    <!-- Dependencies needed to run the Netflix Eureka registry -->
     <dependencies>
         <dependency>
             <groupId>org.springframework.cloud</groupId>

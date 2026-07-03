@@ -24,7 +24,7 @@ export const adminGuard: CanActivateFn = async (route, state) => {
     return true;
   }
 
-  // Optional: redirect to unauthorized or home page
-  router.navigate(['/unauthorized']);   // or ['/']
+  // Redirect non-admin users back to the home page
+  router.navigate(['/']);
   return false;
 };

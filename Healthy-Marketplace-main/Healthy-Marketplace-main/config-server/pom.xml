@@ -20,10 +20,13 @@
     <description>Config Server</description>
 
     <properties>
+        <!-- Java version for compiling the Config Server -->
         <java.version>17</java.version>
+        <!-- Spring Cloud BOM version for Config Server dependencies -->
         <spring-cloud.version>2023.0.1</spring-cloud.version>
     </properties>
 
+    <!-- Import Spring Cloud dependencies BOM for consistent library versions -->
     <dependencyManagement>
         <dependencies>
             <dependency>

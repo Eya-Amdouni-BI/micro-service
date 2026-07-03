@@ -92,8 +92,7 @@ const updateDeliveryFromOrder = async (payload) => {
     const s = String(orderStatus).toLowerCase();
     if (s.includes('deliver') || s.includes('complete') || s.includes('completed')) return 'Delivered';
     if (s.includes('ship') || s.includes('shipped')) return 'Shipped';
-    if (s.includes('confirm') || s.includes('pending')) return 'Pending';
-    if (s.includes('cancel')) return 'Pending';
+    if (s.includes('pending')) return 'Pending';
     return null;
   };
 
@@ -102,7 +101,6 @@ const updateDeliveryFromOrder = async (payload) => {
   if (mapped && existing.status !== mapped) {
     const old = existing.status;
     existing.status = mapped;
-    if (payload && payload.deliveryAddress) existing.deliveryAddress = payload.deliveryAddress;
     if (payload && payload.driverName) existing.driverName = payload.driverName;
     const saved = await existing.save();
 

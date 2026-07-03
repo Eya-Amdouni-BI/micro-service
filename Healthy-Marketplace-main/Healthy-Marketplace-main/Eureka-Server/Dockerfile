@@ -1,12 +1,11 @@
-# Build stage
+# Stage 1: Build Eureka server with Maven
 FROM maven:3.9.6-eclipse-temurin-17-alpine AS build
 WORKDIR /app
-COPY pom.xml .
-COPY src ./src
-# Build the application
-RUN mvn clean package -DskipTests
+COPY pom.xml . # copy project configuration
+COPY src ./src # copy source code
+RUN mvn clean package -DskipTests # compile and package
 
-# Run stage
+# Stage 2: Run Eureka server in a small Java runtime
 FROM eclipse-temurin:17-jdk-alpine
 VOLUME /tmp
 COPY --from=build /app/target/*.jar app.jar

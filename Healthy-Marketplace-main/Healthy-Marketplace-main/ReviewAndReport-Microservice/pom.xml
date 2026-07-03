@@ -36,6 +36,7 @@
     </dependencyManagement>
 
     <dependencies>
+        <!-- Spring Cloud Config, web, JPA, and security dependencies for the review/report service -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-config</artifactId>

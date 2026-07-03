@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { LogsService, LogEntry } from '../../services/logs.service';
 
 @Component({
@@ -10,7 +10,7 @@ export class LogsComponent implements OnInit, OnDestroy {
   status = 'Connecting...';
   private eventSource?: EventSource;
 
-  constructor(private logsService: LogsService) {}
+  constructor(@Inject(LogsService) private logsService: LogsService) {}
 
   ngOnInit(): void {
     this.logsService.getLogs().subscribe({
@@ -24,13 +24,9 @@ export class LogsComponent implements OnInit, OnDestroy {
     this.connectStream();
   }
 
-  ngOnDestroy(): void {
-    this.eventSource?.close();
-  }
-
-  private connectStream(): void {
+  private async connectStream(): Promise<void> {
     try {
-      this.eventSource = this.logsService.connectLogStream();
+      this.eventSource = await this.logsService.connectLogStream();
       this.eventSource.onopen = () => {
         this.status = 'Live updates connected';
       };
@@ -51,5 +47,9 @@ export class LogsComponent implements OnInit, OnDestroy {
     } catch {
       this.status = 'Failed to connect to live log stream';
     }
+  }
+
+  ngOnDestroy(): void {
+    this.eventSource?.close();
   }
 }

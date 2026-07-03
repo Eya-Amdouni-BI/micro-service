@@ -2,6 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <!-- Parent POM sets Spring Boot defaults and dependency version management -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -27,9 +28,12 @@
         <url/>
     </scm>
     <properties>
+        <!-- Compile with Java 17 for Spring Boot 3 compatibility -->
         <java.version>17</java.version>
+        <!-- Spring Cloud BOM version used by config, Eureka, and AMQP dependencies -->
         <spring-cloud.version>2023.0.1</spring-cloud.version>
     </properties>
+    <!-- Dependencies used by OrderService: JPA, config, web, security, load balancing, and message queue -->
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>

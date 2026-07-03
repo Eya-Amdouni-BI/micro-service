@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
+import { from, Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 export interface LogEntry {
   timestamp: string;
@@ -14,13 +16,20 @@ export interface LogEntry {
 export class LogsService {
   private readonly baseUrl = 'http://localhost:8090';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   getLogs(): Observable<LogEntry[]> {
-    return this.http.get<LogEntry[]>(`${this.baseUrl}/logs`);
+    return from(this.authService.getToken()).pipe(
+      switchMap((token) =>
+        this.http.get<LogEntry[]>(`${this.baseUrl}/logs`, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+      )
+    );
   }
 
-  connectLogStream(): EventSource {
-    return new EventSource(`${this.baseUrl}/logs/stream`);
+  async connectLogStream(): Promise<EventSource> {
+    const token = await this.authService.getToken();
+    return new EventSource(`${this.baseUrl}/logs/stream?access_token=${encodeURIComponent(token)}`);
   }
 }

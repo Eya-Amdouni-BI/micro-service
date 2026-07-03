@@ -25,7 +25,7 @@ const routes: Routes = [
   { path: 'delivery', component: DeliveryComponent },
   { path: 'forum', component: ForumComponent },
   { path: 'reviews', component: ReviewsComponent },
-  { path: 'logs', component: LogsComponent },
+  { path: 'logs', component: LogsComponent, canActivate: [adminGuard] },
     { path: 'orders', component: MyOrdersComponent },
   { path: 'shop/:id', component: ProductDetailComponent },
   { path: 'nutrition-profile', component: NutritionProfileComponent },

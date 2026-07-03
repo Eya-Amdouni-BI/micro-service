@@ -5,6 +5,7 @@
          https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
+    <!-- Parent POM sets up Spring Boot build conventions and dependency versions -->
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -20,8 +21,9 @@
     <description>Forum Service</description>
 
     <properties>
+        <!-- Java 17 is required by Spring Boot 3 -->
         <java.version>17</java.version>
-        <!-- Spring Cloud version compatible with Spring Boot 3.2.x -->
+        <!-- Spring Cloud BOM version for Config, Eureka, and load balancer dependencies -->
         <spring-cloud.version>2023.0.1</spring-cloud.version>
     </properties>
 
@@ -39,6 +41,7 @@
     </dependencyManagement>
 
     <dependencies>
+        <!-- Spring Cloud Config client enables this service to load properties from config-server -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-config</artifactId>
