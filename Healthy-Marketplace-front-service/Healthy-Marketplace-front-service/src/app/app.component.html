@@ -1,0 +1,5 @@
+<app-navbar></app-navbar>
+<main class="min-h-screen bg-gradient-to-b from-green-50 to-white">
+  <router-outlet></router-outlet>
+</main>
+<app-footer *ngIf="!isAdmin"></app-footer>

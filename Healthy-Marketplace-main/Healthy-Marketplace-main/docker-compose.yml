@@ -1,0 +1,371 @@
+version: "3.9"
+
+services:
+  # ==================== Databases ====================
+
+  keycloak-db:
+    image: postgres:15-alpine
+    container_name: keycloak-db
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: keycloak
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - healthy-market-network
+    restart: unless-stopped
+
+  forum-db:
+    image: mysql:8.0
+    container_name: forum-db
+    environment:
+      MYSQL_DATABASE: forum_db
+      MYSQL_ROOT_PASSWORD: my-secret-pw
+    ports:
+      - "3307:3306" # Avoid conflict with local MySQL
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-u",
+          "root",
+          "-pmy-secret-pw",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - healthy-market-network
+    restart: unless-stopped
+
+  product-db:
+    image: mysql:8.0
+    container_name: product-db
+    environment:
+      MYSQL_DATABASE: product_db
+      MYSQL_ROOT_PASSWORD: product-secret-pw
+    ports:
+      - "3308:3306"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-u",
+          "root",
+          "-pproduct-secret-pw",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - healthy-market-network
+    restart: unless-stopped
+
+  order-db:
+    image: mysql:8.0
+    container_name: order-db
+    environment:
+      MYSQL_DATABASE: orders_db
+      MYSQL_ROOT_PASSWORD: order-secret-pw
+    ports:
+      - "3309:3306"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-u",
+          "root",
+          "-porder-secret-pw",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - healthy-market-network
+    restart: unless-stopped
+
+  # ==================== Config & Discovery ====================
+
+  config-server:
+    build:
+      context: ./config-server
+    container_name: config-server
+    ports:
+      - "8889:8889"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - CONFIG_SERVER_URL=http://config-server:8889
+    depends_on:
+      - eureka-server
+    networks:
+      - healthy-market-network
+    restart: unless-stopped
+
+  eureka-server:
+    build:
+      context: ./Eureka-Server
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - healthy-market-network
+    restart: unless-stopped
+
+  # ==================== API Gateway ====================
+
+  apigateway:
+    build:
+      context: ./ApiGateway
+    container_name: apigateway
+    ports:
+      - "8888:8888"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - CONFIG_SERVER_URL=http://config-server:8889
+      - KEYCLOAK_URL=http://keycloak:8080
+    depends_on:
+      - eureka-server
+      - config-server
+    networks:
+      - healthy-market-network
+    restart: unless-stopped
+
+  # ==================== Microservices ====================
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.3.1
+    container_name: keycloak
+    command: start-dev
+    environment:
+      KC_DB: postgres
+      KC_DB_URL_HOST: keycloak-db
+      KC_DB_URL_DATABASE: keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: keycloak
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    ports:
+      - "9090:8080"
+    depends_on:
+      - keycloak-db
+    networks:
+      - healthy-market-network
+    restart: unless-stopped
+
+  forum-service:
+    build:
+      context: ./forumService
+    container_name: forum-service
+    ports:
+      - "8006:8006"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - CONFIG_SERVER_URL=http://config-server:8889
+      - KEYCLOAK_URL=http://keycloak:8080
+      - SPRING_DATASOURCE_URL=jdbc:mysql://forum-db:3306/forum_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=my-secret-pw
+    depends_on:
+      forum-db:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+      config-server:
+        condition: service_started
+    networks:
+      - healthy-market-network
+    restart: unless-stopped
+
+  product-service:
+    build:
+      context: ./ProductService
+    container_name: product-service
+    ports:
+      - "8083:8083"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - CONFIG_SERVER_URL=http://config-server:8889
+      - KEYCLOAK_URL=http://keycloak:8080
+      - SPRING_DATASOURCE_URL=jdbc:mysql://product-db:3306/product_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=product-secret-pw
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=guest
+      - SPRING_RABBITMQ_PASSWORD=guest
+    depends_on:
+      product-db:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+      config-server:
+        condition: service_started
+    networks:
+      - healthy-market-network
+    restart: unless-stopped
+
+  order-service:
+    build:
+      context: ./OrderService
+    container_name: order-service
+    ports:
+      - "8082:8082"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - CONFIG_SERVER_URL=http://config-server:8889
+      - KEYCLOAK_URL=http://keycloak:8080
+      - SPRING_DATASOURCE_URL=jdbc:mysql://order-db:3306/orders_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=order-secret-pw
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=guest
+      - SPRING_RABBITMQ_PASSWORD=guest
+    depends_on:
+      order-db:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+      config-server:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
+    networks:
+      - healthy-market-network
+    restart: unless-stopped
+
+  delivery-db:
+    image: mongo:latest
+    container_name: delivery-db
+    ports:
+      - "27018:27017"
+    volumes:
+      - delivery_data:/data/db
+    networks:
+      - healthy-market-network
+
+  delivery-service:
+    build:
+      context: ./delivery-service
+    container_name: delivery-service
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - MONGO_URI=mongodb://delivery-db:27017/delivery_db
+      - EUREKA_HOST=eureka-server
+      - EUREKA_PORT=8761
+      - EUREKA_ENABLED=true
+      - CONFIG_SERVER_URL=http://config-server:8889
+      - EUREKA_INSTANCE_HOSTNAME=delivery-service
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+    depends_on:
+      - eureka-server
+      - delivery-db
+      - config-server
+      - rabbitmq
+    networks:
+      - healthy-market-network
+
+  log-service:
+    build:
+      context: ./log-service
+    container_name: log-service
+    ports:
+      - "8090:8090"
+    environment:
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+    depends_on:
+      - rabbitmq
+    networks:
+      - healthy-market-network
+    restart: unless-stopped
+
+  diet-service:
+    build:
+      context: ./diet_microservice
+    container_name: diet-service
+    ports:
+      - "8008:8008"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - CONFIG_SERVER_URL=http://config-server:8889
+      - KEYCLOAK_URL=http://keycloak:8080
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=guest
+      - SPRING_RABBITMQ_PASSWORD=guest
+    depends_on:
+      - eureka-server
+      - config-server
+      - rabbitmq
+    networks:
+      - healthy-market-network
+    restart: unless-stopped
+
+  review-report-service:
+    build:
+      context: ./ReviewAndReport-Microservice
+    container_name: review-report-service
+    ports:
+      - "8084:8084" # Changed to avoid conflict
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - CONFIG_SERVER_URL=http://config-server:8889
+      - KEYCLOAK_URL=http://keycloak:8080
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=guest
+      - SPRING_RABBITMQ_PASSWORD=guest
+    depends_on:
+      - eureka-server
+      - config-server
+    networks:
+      - healthy-market-network
+    restart: unless-stopped
+
+  rabbitmq:
+    image: rabbitmq:3.11-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    networks:
+      - healthy-market-network
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ../../Healthy-Marketplace-front-service/Healthy-Marketplace-front-service
+    container_name: frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - apigateway
+    networks:
+      - healthy-market-network
+    restart: unless-stopped
+
+networks:
+  healthy-market-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  delivery_data:

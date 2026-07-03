@@ -1,0 +1,112 @@
+<nav class="bg-white border-b border-gray-100 fixed w-full z-50 shadow-sm">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="flex justify-between items-center h-20">
+
+      <!-- Logo -->
+      <a routerLink="/" class="flex items-center gap-x-3 group">
+        <div class="w-10 h-10 bg-green-600 rounded-2xl flex items-center justify-center shadow-inner">
+          <i class="fas fa-leaf text-3xl text-white group-hover:rotate-12 transition-transform duration-300"></i>
+        </div>
+        <div>
+          <span class="text-3xl font-bold tracking-tight text-green-800">GreenMarket</span>
+          <p class="text-[10px] text-green-600 -mt-1 font-medium tracking-[1px]">HEALTHY LIVING</p>
+        </div>
+      </a>
+
+      <!-- Desktop Menu -->
+      <div class="hidden md:flex items-center gap-x-8">
+        <a *ngFor="let item of menuItems"
+           [routerLink]="item.path"
+           routerLinkActive="text-green-600 font-semibold"
+           (click)="navigate(item, $event)"
+           class="text-gray-700 hover:text-green-700 transition-all duration-200 text-sm font-medium">
+          {{ item.label }}
+        </a>
+      </div>
+
+      <!-- Right Side -->
+      <div class="flex items-center gap-x-6">
+        <!-- Search -->
+        <button class="p-2.5 text-gray-500 hover:text-green-600 hover:bg-green-50 rounded-2xl transition-all">
+          <i class="fas fa-search text-xl"></i>
+        </button>
+
+        <!-- Cart -->
+        <button routerLink="/cart" 
+                class="relative p-2.5 text-gray-500 hover:text-green-600 hover:bg-green-50 rounded-2xl transition-all">
+          <i class="fas fa-shopping-cart text-xl"></i>
+          <span class="absolute -top-1 -right-1 bg-green-600 text-white text-xs font-bold 
+                       min-w-[18px] h-[18px] rounded-full flex items-center justify-center">
+            {{ cartItemCount || 0 }}
+          </span>
+        </button>
+
+        <!-- Profile -->
+        <div class="relative" (clickOutside)="closeProfileDropdown()">
+          <button (click)="toggleProfileDropdown()"
+                  class="flex items-center gap-x-2.5 pl-2 pr-4 py-1.5 rounded-3xl hover:bg-green-50 transition-all">
+            <div class="w-9 h-9 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl 
+                        flex items-center justify-center text-white font-semibold shadow-sm">
+              {{ username?.charAt(0)?.toUpperCase() || 'U' }}
+            </div>
+            <div class="hidden md:block text-left">
+              <p class="text-sm font-semibold text-gray-800 leading-none">{{ username }}</p>
+              <p class="text-xs text-gray-500">Account</p>
+            </div>
+            <i class="fas fa-chevron-down text-xs text-gray-400 transition-transform duration-200"
+               [class.rotate-180]="profileDropdownOpen"></i>
+          </button>
+
+          <!-- Dropdown -->
+          <div *ngIf="profileDropdownOpen" 
+               class="absolute right-0 mt-3 w-56 bg-white rounded-3xl shadow-xl border border-gray-100 py-2 overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-100">
+              <p class="font-semibold text-gray-800">{{ username }}</p>
+              <p class="text-xs text-gray-500">Member since 2025</p>
+            </div>
+            
+            <a routerLink="/orders" (click)="closeProfileDropdown()"
+               class="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-green-50 transition-colors">
+              <i class="fas fa-box text-lg w-5"></i>
+              <span class="font-medium">My Orders</span>
+            </a>
+
+            <div class="border-t border-gray-100 my-1"></div>
+
+            <button (click)="logout(); closeProfileDropdown()"
+                    class="w-full flex items-center gap-3 px-6 py-3 text-red-600 hover:bg-red-50 transition-colors">
+              <i class="fas fa-sign-out-alt text-lg w-5"></i>
+              <span class="font-medium">Logout</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button (click)="toggleMobileMenu()" class="md:hidden p-3 text-gray-600">
+          <i class="fas fa-bars text-2xl"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+      <div *ngIf="mobileMenuOpen" class="md:hidden bg-white border-t">
+    <div class="px-6 py-6 space-y-2">
+      <a *ngFor="let item of menuItems" 
+         href
+         (click)="navigate(item, $event)"
+         class="block py-3 px-4 text-gray-700 hover:bg-green-50 hover:text-green-700 rounded-2xl font-medium">
+        {{ item.label }}
+      </a>
+      <hr class="my-4">
+      <a routerLink="/orders" (click)="mobileMenuOpen = false"
+         class="block py-3 px-4 text-gray-700 hover:bg-green-50 hover:text-green-700 rounded-2xl font-medium">
+        My Orders
+      </a>
+      <button (click)="logout()" 
+              class="w-full text-left py-3 px-4 text-red-600 hover:bg-red-50 rounded-2xl font-medium">
+        Logout
+      </button>
+    </div>
+  </div>
+</nav>

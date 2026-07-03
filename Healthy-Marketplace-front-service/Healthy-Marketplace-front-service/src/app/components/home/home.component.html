@@ -1,0 +1,155 @@
+  <!-- HERO SECTION (with video & floating orbs) -->
+  <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+    <div class="absolute inset-0 z-0">
+      <video autoplay muted loop playsinline class="w-full h-full object-cover">
+        <source src="https://cdn.pixabay.com/video/2023/07/15/171984-841892216_tiny.mp4" type="video/mp4">
+        <img src="https://images.unsplash.com/photo-1500595046743-ee5a8a800ec2?w=1600" alt="organic farm" class="w-full h-full object-cover">
+      </video>
+      <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-black/20"></div>
+    </div>
+    
+    <!-- floating organic shapes -->
+    <div class="absolute top-20 left-5 w-72 h-72 bg-green-400/20 rounded-full blur-3xl animate-float-slow pointer-events-none"></div>
+    <div class="absolute bottom-20 right-10 w-80 h-80 bg-emerald-300/20 rounded-full blur-3xl animate-float-fast pointer-events-none"></div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 text-white">
+      <div class="max-w-3xl">
+        <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md rounded-full px-5 py-2.5 mb-6 border border-white/30">
+          <span class="w-2.5 h-2.5 bg-green-400 rounded-full animate-pulse"></span>
+          <span class="text-sm font-semibold tracking-wide">🌱 100% Certified Organic · Zero Pesticides</span>
+        </div>
+        <h1 class="text-5xl lg:text-7xl font-extrabold leading-tight tracking-tight">
+          Pure Harvest,<br>
+          <span class="relative inline-block text-green-300">
+            Straight to You
+            <span class="absolute -bottom-3 left-0 w-full h-1.5 bg-green-400 origin-left animate-scaleX"></span>
+          </span>
+        </h1>
+        <p class="text-xl md:text-2xl text-gray-100 mt-8 mb-10 max-w-2xl drop-shadow-md">
+          Farm-fresh vegetables, exotic fruits, organic dairy & ancient grains — delivered within 24h. Taste nature’s best.
+        </p>
+        <div class="flex flex-wrap gap-5">
+          <a href="#products" class="group relative overflow-hidden bg-green-600 text-white px-8 py-4 rounded-full text-lg font-bold shadow-xl hover:shadow-2xl transition-all">
+            <span class="relative z-10">🌾 Shop the Harvest</span>
+            <span class="absolute inset-0 bg-green-700 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+          </a>
+          <button class="group flex items-center gap-3 bg-white/20 backdrop-blur-md px-8 py-4 rounded-full text-lg font-semibold hover:bg-white/30 transition-all">
+            <i class="fa-regular fa-circle-play group-hover:scale-110 transition-transform"></i> Watch our story
+          </button>
+        </div>
+        <!-- Trust badges -->
+        <div class="flex flex-wrap gap-8 mt-16 pt-4 border-t border-white/30">
+          <div><span class="text-3xl font-black">15K+</span><p class="text-sm text-green-100">Happy families</p></div>
+          <div><span class="text-3xl font-black">⭐4.98</span><p class="text-sm text-green-100">Customer rating</p></div>
+          <div><span class="text-3xl font-black">24h</span><p class="text-sm text-green-100">Farm-to-fork</p></div>
+        </div>
+      </div>
+    </div>
+    <!-- scroll hint -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-1 text-white/70 text-sm">
+      <span>Scroll</span>
+      <div class="w-5 h-9 border-2 border-white/50 rounded-full flex justify-center pt-1"><div class="w-1.5 h-2 bg-white rounded-full scroll-indicator-mouse"></div></div>
+    </div>
+  </section>
+
+  <!-- WHY CHOOSE US / BENEFITS SECTION -->
+  <section id="benefits" class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="text-center mb-14 fade-up-element">
+        <span class="text-green-600 font-bold uppercase tracking-wider text-sm"><i class="fa-regular fa-heart"></i> why naturfusion</span>
+        <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mt-2">Rooted in Goodness</h2>
+        <p class="text-gray-500 max-w-2xl mx-auto mt-4">Sustainably grown, ethically sourced, and delivered with love.</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="bg-green-50/40 rounded-3xl p-6 text-center hover:shadow-lg transition-all fade-up-element card-hover">
+          <div class="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-5 text-green-700 text-3xl"><i class="fa-solid fa-seedling"></i></div>
+          <h3 class="text-xl font-bold mb-2">100% Organic</h3>
+          <p class="text-gray-600">Certified by ECOCERT, no synthetic chemicals or GMOs.</p>
+        </div>
+        <div class="bg-green-50/40 rounded-3xl p-6 text-center hover:shadow-lg transition-all fade-up-element card-hover">
+          <div class="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-5 text-green-700 text-3xl"><i class="fa-solid fa-truck-fast"></i></div>
+          <h3 class="text-xl font-bold mb-2">Same-Day Delivery</h3>
+          <p class="text-gray-600">Zero-emission logistics, chilled packaging, fresh guarantee.</p>
+        </div>
+        <div class="bg-green-50/40 rounded-3xl p-6 text-center hover:shadow-lg transition-all fade-up-element card-hover">
+          <div class="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-5 text-green-700 text-3xl"><i class="fa-solid fa-hand-holding-heart"></i></div>
+          <h3 class="text-xl font-bold mb-2">Farmers First</h3>
+          <p class="text-gray-600">Direct partnerships, fair wages, regenerative practices.</p>
+        </div>
+        <div class="bg-green-50/40 rounded-3xl p-6 text-center hover:shadow-lg transition-all fade-up-element card-hover">
+          <div class="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-5 text-green-700 text-3xl"><i class="fa-regular fa-clock"></i></div>
+          <h3 class="text-xl font-bold mb-2">Seasonal & Fresh</h3>
+          <p class="text-gray-600">Harvested at peak ripeness, curated weekly.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATEGORIES (complete 6 items) -->
+  <section id="categories" class="py-20 bg-gradient-to-b from-gray-50 to-white">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="text-center mb-14 fade-up-element">
+        <span class="text-green-600 font-semibold uppercase text-sm tracking-wider"><i class="fa-solid fa-grid-2"></i> collections</span>
+        <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mt-2">Shop by Goodness</h2>
+        <p class="text-gray-500 max-w-2xl mx-auto mt-3">Discover vibrant, organic categories — from root to fruit.</p>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5">
+        <!-- 6 categories with images -->
+        <div class="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 cursor-pointer"><img src="https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=500" class="w-full h-52 object-cover group-hover:scale-110 transition duration-700"><div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div><div class="absolute bottom-5 left-5 text-white"><i class="fa-solid fa-carrot text-3xl mb-2 block"></i><h3 class="font-bold text-xl">Veggies</h3><p class="text-xs">150+ items</p></div></div>
+        <div class="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 cursor-pointer"><img src="https://images.unsplash.com/photo-1611080626919-7cf5a9dbab5b?w=500" class="w-full h-52 object-cover group-hover:scale-110 transition duration-700"><div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div><div class="absolute bottom-5 left-5 text-white"><i class="fa-solid fa-apple-whole text-3xl mb-2 block"></i><h3 class="font-bold text-xl">Fruits</h3><p class="text-xs">120+ items</p></div></div>
+        <div class="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 cursor-pointer"><img src="https://images.unsplash.com/photo-1628088062854-d1876c5d9b1d?w=500" class="w-full h-52 object-cover group-hover:scale-110 transition duration-700"><div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div><div class="absolute bottom-5 left-5 text-white"><i class="fa-solid fa-cheese text-3xl mb-2 block"></i><h3 class="font-bold text-xl">Dairy</h3><p class="text-xs">Organic milk, cheese</p></div></div>
+        <div class="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 cursor-pointer"><img src="https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=500" class="w-full h-52 object-cover group-hover:scale-110 transition duration-700"><div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div><div class="absolute bottom-5 left-5 text-white"><i class="fa-solid fa-egg text-3xl mb-2 block"></i><h3 class="font-bold text-xl">Eggs</h3><p class="text-xs">Pasture-raised</p></div></div>
+        <div class="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 cursor-pointer"><img src="https://images.unsplash.com/photo-1536304993881-ff6e9eefa2a6?w=500" class="w-full h-52 object-cover group-hover:scale-110 transition duration-700"><div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div><div class="absolute bottom-5 left-5 text-white"><i class="fa-solid fa-wheat-awn text-3xl mb-2 block"></i><h3 class="font-bold text-xl">Grains</h3><p class="text-xs">Ancient & gluten-free</p></div></div>
+        <div class="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 cursor-pointer"><img src="https://images.unsplash.com/photo-1622034460900-0d7bd1a4eb08?w=500" class="w-full h-52 object-cover group-hover:scale-110 transition duration-700"><div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div><div class="absolute bottom-5 left-5 text-white"><i class="fa-solid fa-leaf text-3xl mb-2 block"></i><h3 class="font-bold text-xl">Herbs</h3><p class="text-xs">Aromatic & medicinal</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED PRODUCTS (8 premium cards) -->
+  <section id="products" class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="text-center mb-14 fade-up-element">
+        <span class="text-green-600 font-semibold uppercase text-sm">🌟 farmer's choice</span>
+        <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mt-2">Season's Best Harvest</h2>
+        <p class="text-gray-500 max-w-2xl mx-auto mt-3">Handpicked organic produce, straight from local eco-farms.</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <!-- Product 1 -->
+        <div class="group bg-white rounded-2xl shadow-xl overflow-hidden card-hover"><div class="relative h-64 overflow-hidden"><img src="https://images.unsplash.com/photo-1607305387299-a3d9611cd469?w=600" class="w-full h-full object-cover group-hover:scale-110 transition duration-500"><div class="absolute top-3 left-3 bg-red-500 text-white text-xs px-3 py-1 rounded-full">🔥 Best Seller</div></div><div class="p-5"><div class="flex items-center justify-between"><h3 class="font-bold text-xl">Heirloom Tomatoes</h3><div class="flex text-yellow-400"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star-half-stroke"></i></div></div><p class="text-gray-500 text-sm mt-1">Organic, vine-ripened, juicy</p><div class="flex justify-between items-center mt-4"><span class="text-2xl font-bold text-green-700">$5.99 <span class="text-sm">/kg</span></span><button class="add-to-cart-btn bg-green-100 text-green-700 w-10 h-10 rounded-full hover:bg-green-600 hover:text-white transition-all"><i class="fa-solid fa-cart-plus"></i></button></div></div></div>
+        <!-- Product 2 -->
+        <div class="group bg-white rounded-2xl shadow-xl overflow-hidden card-hover"><div class="relative h-64 overflow-hidden"><img src="https://images.unsplash.com/photo-1587280501635-68a0e82cd5ff?w=600" class="w-full h-full object-cover group-hover:scale-110 transition duration-500"><div class="absolute top-3 left-3 bg-green-600 text-white text-xs px-3 py-1 rounded-full">🌱 Organic</div></div><div class="p-5"><div class="flex items-center justify-between"><h3 class="font-bold text-xl">Avocado Hass</h3><div class="flex text-yellow-400"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i></div></div><p class="text-gray-500 text-sm mt-1">Creamy texture, perfect toast</p><div class="flex justify-between items-center mt-4"><span class="text-2xl font-bold text-green-700">$3.49 <span class="text-sm">/each</span></span><button class="add-to-cart-btn bg-green-100 text-green-700 w-10 h-10 rounded-full hover:bg-green-600 hover:text-white transition-all"><i class="fa-solid fa-cart-plus"></i></button></div></div></div>
+        <!-- Product 3 -->
+        <div class="group bg-white rounded-2xl shadow-xl overflow-hidden card-hover"><div class="relative h-64 overflow-hidden"><img src="https://images.unsplash.com/photo-1579613832125-5d34a13ffe2a?w=600" class="w-full h-full object-cover group-hover:scale-110 transition duration-500"><div class="absolute top-3 left-3 bg-amber-600 text-white text-xs px-3 py-1 rounded-full">⭐ Limited</div></div><div class="p-5"><div class="flex items-center justify-between"><h3 class="font-bold text-xl">Wild Blueberries</h3><div class="flex text-yellow-400"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div><p class="text-gray-500 text-sm mt-1">Antioxidant-rich, frozen fresh</p><div class="flex justify-between items-center mt-4"><span class="text-2xl font-bold text-green-700">$7.99 <span class="text-sm">/250g</span></span><button class="add-to-cart-btn bg-green-100 text-green-700 w-10 h-10 rounded-full hover:bg-green-600 hover:text-white transition-all"><i class="fa-solid fa-cart-plus"></i></button></div></div></div>
+        <!-- Product 4 -->
+        <div class="group bg-white rounded-2xl shadow-xl overflow-hidden card-hover"><div class="relative h-64 overflow-hidden"><img src="https://images.unsplash.com/photo-1557844352-761f2565b576?w=600" class="w-full h-full object-cover group-hover:scale-110 transition duration-500"></div><div class="p-5"><div class="flex items-center justify-between"><h3 class="font-bold text-xl">Rainbow Chard</h3><div class="flex text-yellow-400"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star-half-stroke"></i></div></div><p class="text-gray-500 text-sm mt-1">Nutrient-dense leafy greens</p><div class="flex justify-between items-center mt-4"><span class="text-2xl font-bold text-green-700">$4.29 <span class="text-sm">/bunch</span></span><button class="add-to-cart-btn bg-green-100 text-green-700 w-10 h-10 rounded-full hover:bg-green-600 hover:text-white transition-all"><i class="fa-solid fa-cart-plus"></i></button></div></div></div>
+      </div>
+      <div class="text-center mt-12"><a href="#" class="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-full font-semibold shadow-lg transition-all">Explore full market <i class="fa-solid fa-arrow-right"></i></a></div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS section -->
+  <section id="testimonials" class="py-20 bg-green-50/30">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="text-center fade-up-element"><span class="text-green-600 font-semibold">❤️ real voices</span><h2 class="text-4xl md:text-5xl font-bold text-gray-900">What our farm family says</h2></div>
+      <div class="grid md:grid-cols-3 gap-8 mt-16">
+        <div class="bg-white p-7 rounded-3xl shadow-md hover:shadow-xl transition-all"><div class="flex text-yellow-400 text-lg mb-4">★★★★★</div><p class="text-gray-700 italic">“The freshest organic veggies I’ve ever tasted! Delivery was super fast and packaging eco-friendly. I’m a customer for life.”</p><div class="flex items-center gap-3 mt-6"><div class="w-12 h-12 rounded-full bg-green-200 flex items-center justify-center text-green-800 font-bold">JD</div><div><h4 class="font-bold">Jessica M.</h4><p class="text-xs text-gray-500">verified buyer</p></div></div></div>
+        <div class="bg-white p-7 rounded-3xl shadow-md hover:shadow-xl transition-all"><div class="flex text-yellow-400 text-lg mb-4">★★★★★</div><p class="text-gray-700 italic">“Incredible variety of organic fruits. The heirloom tomatoes changed my salads forever! Highly recommend NaturFusion.”</p><div class="flex items-center gap-3 mt-6"><div class="w-12 h-12 rounded-full bg-green-200 flex items-center justify-center text-green-800 font-bold">MK</div><div><h4 class="font-bold">Michael K.</h4><p class="text-xs text-gray-500">weekly subscriber</p></div></div></div>
+        <div class="bg-white p-7 rounded-3xl shadow-md hover:shadow-xl transition-all"><div class="flex text-yellow-400 text-lg mb-4">★★★★★</div><p class="text-gray-700 italic">“Supporting local farmers never felt this good! The grains and dairy are top tier. Plus the glass jars return program — genius.”</p><div class="flex items-center gap-3 mt-6"><div class="w-12 h-12 rounded-full bg-green-200 flex items-center justify-center text-green-800 font-bold">SR</div><div><h4 class="font-bold">Sophia R.</h4><p class="text-xs text-gray-500">zero waste advocate</p></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER with wave design -->
+  <section class="py-20 bg-gradient-to-r from-green-800 to-emerald-700 text-white relative overflow-hidden">
+    <div class="absolute top-0 left-0 w-full h-20 bg-white/5 skew-y-3 -translate-y-6"></div>
+    <div class="max-w-4xl mx-auto px-6 text-center relative z-2">
+      <i class="fa-regular fa-envelope text-6xl text-green-200 mb-6 animate-bounce"></i>
+      <h2 class="text-4xl md:text-5xl font-bold mb-4">Fresh news, straight to your inbox</h2>
+      <p class="text-lg text-green-100 mb-8">Subscribe and get 15% off your first box + weekly farm stories & recipes.</p>
+      <form id="newsletterForm" class="max-w-xl mx-auto flex flex-col sm:flex-row gap-4">
+        <input type="email" id="newsEmail" placeholder="Your email address" class="flex-1 px-6 py-4 rounded-full text-gray-900 focus:outline-none focus:ring-4 focus:ring-green-300 shadow-xl" required>
+        <button type="submit" class="px-8 py-4 bg-white text-green-800 font-bold rounded-full hover:bg-green-50 transition-all shadow-lg hover:shadow-2xl">Subscribe →</button>
+      </form>
+      <p class="text-green-200 text-sm mt-6">No spam, only organic goodness. Unsubscribe anytime.</p>
+    </div>
+  </section>

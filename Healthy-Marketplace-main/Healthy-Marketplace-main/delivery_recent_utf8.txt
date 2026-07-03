@@ -1,0 +1,10 @@
+﻿delivery-service  | 
+delivery-service  | > delivery-service@1.0.0 start
+delivery-service  | > node server.js
+delivery-service  | 
+delivery-service  | Attempting to start server. Retries left: 10
+delivery-service  | Fetching configuration from http://config-server:8889/delivery-service/development
+delivery-service  | Connected to MongoDB successfully: delivery-db
+delivery-service  | Server running on port 3000
+delivery-service  | registered with eureka:  delivery-service/delivery-service
+delivery-service  | Eureka client started successfully

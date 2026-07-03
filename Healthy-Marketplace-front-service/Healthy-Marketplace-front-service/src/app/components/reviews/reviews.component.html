@@ -1,0 +1,104 @@
+<div class="space-y-12">
+  <!-- Statistics Section -->
+  <div class="grid md:grid-cols-12 gap-8 lg:gap-12 bg-white rounded-[2rem] p-8 lg:p-10 shadow-sm border border-gray-100">
+    <div class="md:col-span-4 flex flex-col items-center justify-center text-center space-y-4">
+      <h2 class="text-2xl font-bold text-gray-900">Customer Reviews</h2>
+      <div class="text-7xl font-black text-green-600 tracking-tighter">
+        {{ overallRating }}<span class="text-3xl text-gray-400 font-bold">/5</span>
+      </div>
+      <div class="flex gap-1">
+        <svg *ngFor="let star of getStarArray(5)" 
+             class="w-6 h-6" 
+             [class.text-amber-400]="isRatingFilled(star, overallRating)"
+             [class.text-gray-200]="!isRatingFilled(star, overallRating)"
+             fill="currentColor" viewBox="0 0 20 20">
+          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+        </svg>
+      </div>
+      <div class="text-gray-500 font-medium">Based on {{ totalReviews }} reviews</div>
+    </div>
+
+    <!-- Rating Distribution -->
+    <div class="md:col-span-8 flex flex-col justify-center space-y-3">
+      <div *ngFor="let rating of [5,4,3,2,1]" class="flex items-center gap-4 cursor-pointer group" (click)="filterByRating(rating)">
+        <div class="flex items-center gap-1 w-16">
+          <span class="font-bold text-gray-700 group-hover:text-amber-500 transition-colors">{{ rating }}</span>
+          <svg class="w-4 h-4 text-amber-400 shadow-sm rounded-full" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+        </div>
+        <div class="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden shadow-inner">
+          <div class="h-full bg-amber-400 rounded-full transition-all duration-1000" [style.width.%]="getRatingPercentage(rating)"></div>
+        </div>
+        <div class="w-12 text-sm text-gray-500 font-medium text-right">{{ getRatingPercentage(rating) }}%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Review List -->
+  <div class="space-y-6">
+    <div class="flex flex-wrap items-center justify-between gap-4 border-b border-gray-100 pb-6">
+      <h3 class="text-xl font-bold text-gray-900">All Reviews ({{ filteredReviews.length }})</h3>
+      <div class="flex flex-wrap gap-3">
+        <select [(ngModel)]="selectedSort" class="form-select bg-gray-50 border-0 rounded-xl px-4 text-sm font-medium focus:ring-green-500">
+          <option *ngFor="let opt of sortOptions" [value]="opt.value">{{ opt.label }}</option>
+        </select>
+        <button *ngIf="selectedRating > 0" (click)="clearFilters()" class="px-4 py-2 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-xl transition-colors">Clear Filters</button>
+      </div>
+    </div>
+
+    <div *ngIf="filteredReviews.length === 0" class="text-center py-12 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
+      <div class="text-4xl mb-3">📭</div>
+      <h3 class="text-gray-900 font-semibold mb-1">No reviews yet</h3>
+      <p class="text-gray-500">Be the first to review this product!</p>
+    </div>
+
+    <!-- Review Items -->
+    <div *ngFor="let review of filteredReviews; let i = index" class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+      <div class="flex justify-between items-start mb-4">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 bg-green-100 text-green-700 rounded-full flex items-center justify-center font-bold text-lg">
+            {{ getAvatarInitials() }}
+          </div>
+          <div>
+            <h4 class="font-bold text-gray-900">User #{{ review.userId || 'Guest' }}</h4>
+            <div class="text-sm text-gray-500">{{ formatDate(review.createdAt) }}</div>
+          </div>
+        </div>
+        <div class="flex gap-1">
+          <svg *ngFor="let star of getStarArray(5)" class="w-5 h-5" [class.text-amber-400]="isRatingFilled(star, review.rating)" [class.text-gray-200]="!isRatingFilled(star, review.rating)" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+          </svg>
+        </div>
+      </div>
+      <p class="text-gray-700 leading-relaxed whitespace-pre-line">{{ review.content }}</p>
+      
+      <!-- Actions -->
+      <div class="mt-6 flex gap-4 border-t border-gray-50 pt-4">
+        <button (click)="reportReview(review)" class="text-sm text-gray-400 hover:text-red-500 font-medium transition-colors ml-auto">Report</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Write Review Form -->
+  <div class="bg-green-50 rounded-3xl p-8 lg:p-10 border border-green-100 mt-12">
+    <h3 class="text-2xl font-bold text-gray-900 mb-2">Write a Review</h3>
+    <p class="text-gray-600 mb-8">Share your thoughts with other customers.</p>
+    <div class="space-y-6">
+      <!-- Star Selection -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">Overall Rating</label>
+        <div class="flex gap-2 relative">
+          <svg *ngFor="let star of [1,2,3,4,5]" (mouseenter)="hoverRating = star" (mouseleave)="hoverRating = 0" (click)="selectedRatingForForm = star" class="w-10 h-10 cursor-pointer transition-transform hover:scale-110" [class.text-amber-400]="star <= (hoverRating || selectedRatingForForm)" [class.text-gray-300]="star > (hoverRating || selectedRatingForForm)" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+          </svg>
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Your Review</label>
+        <textarea [(ngModel)]="reviewForm.content" rows="4" placeholder="What did you like or dislike?" class="w-full form-textarea bg-white border-gray-200 justify-start rounded-2xl focus:ring-green-500 focus:border-green-500 p-4 transition-shadow"></textarea>
+      </div>
+      <button (click)="submitReview()" [disabled]="!reviewForm.content || selectedRatingForForm === 0 || !productId" class="w-full sm:w-auto px-8 py-3.5 bg-green-600 hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold rounded-xl transition-all shadow-lg shadow-green-200">
+        Submit Review
+      </button>
+    </div>
+  </div>
+</div>

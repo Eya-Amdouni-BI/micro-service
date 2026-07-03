@@ -1,0 +1,73 @@
+Presentation Commands - Backend & Frontend
+
+Prerequisites:
+- Docker / Docker Compose
+- Node.js (for frontend) and npm
+- (Optional) Java + Maven for local Spring Boot runs
+
+1) Start full backend with Docker Compose
+cd Healthy-Marketplace-main/Healthy-Marketplace-main
+# start core services (Eureka, Config, Keycloak, databases, services)
+docker compose up -d
+
+Or start selected services (example used during dev):
+cd Healthy-Marketplace-main/Healthy-Marketplace-main
+docker compose up -d eureka-server config-server keycloak-db keycloak delivery-db forum-db product-db order-db
+
+2) Rebuild and restart a single microservice (ProductService example)
+cd Healthy-Marketplace-main/Healthy-Marketplace-main
+# rebuild the product service image
+docker compose build product-service
+# restart only product-service
+docker compose up -d product-service
+
+# view the container logs
+docker logs -f product-service
+# or tail via compose
+docker compose logs -f product-service
+
+3) Start API Gateway (local/run via Maven) — alternative to Docker
+cd Healthy-Marketplace-main/Healthy-Marketplace-main/ApiGateway
+# run with Maven (requires Java & Maven installed)
+mvn spring-boot:run
+
+4) Start Frontend (local development)
+cd Healthy-Marketplace-front-service/Healthy-Marketplace-front-service
+# install deps (first time)
+npm install
+# start dev server (if package.json has start script)
+npm start
+# or use Angular CLI directly
+npx ng serve --host 0.0.0.0 --port 4200 --open
+
+5) Build frontend for production and serve (simple static serve)
+cd Healthy-Marketplace-front-service/Healthy-Marketplace-front-service
+npm run build --if-present
+# serve the built files (install http-server globally if needed)
+npx http-server ./dist -p 4200
+
+6) Keycloak admin (inside keycloak container)
+# get admin CLI access
+docker exec -it keycloak /opt/keycloak/bin/kcadm.sh config credentials --server http://localhost:8080 --realm master --user admin --password admin
+# list users in realm
+docker exec -it keycloak /opt/keycloak/bin/kcadm.sh get users -r healthy-market-realm
+
+7) Quick verification (PowerShell example)
+# set a short-lived token in env and call gateway
+$env:TOKEN = "<PASTE_ACCESS_TOKEN_HERE>"
+Invoke-WebRequest -Uri 'http://localhost:8888/api/products' -Headers @{ Authorization = ('Bearer ' + $env:TOKEN) } -UseBasicParsing
+
+8) Useful Docker commands
+# see running containers
+docker ps
+# follow logs for multiple services
+docker compose logs -f apigateway product-service
+# stop the stack
+docker compose down
+
+Notes / Tips for presentation:
+- If a service returns 500 after code changes, check that you rebuilt and restarted that service's container.
+- Use `docker compose logs -f <service>` to show live logs during demo.
+- For frontend token issues, open browser DevTools → Network to show the Authorization header being sent to `http://localhost:8888`.
+
+Good luck with your presentation! If you want, I can tailor this file to only the exact commands you'll run step-by-step.

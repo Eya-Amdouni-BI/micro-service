@@ -1,0 +1,172 @@
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold mb-8">Nutrition Profile</h1>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <!-- Profile Form -->
+    <div class="bg-white p-6 rounded-lg shadow-md">
+      <h2 class="text-xl font-semibold mb-4">
+        {{ isEditing ? 'Edit Profile' : 'Create New Profile' }}
+      </h2>
+
+      <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Weight (kg)</label>
+          <input
+            type="number"
+            formControlName="weight"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            placeholder="70">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Height (cm)</label>
+          <input
+            type="number"
+            formControlName="height"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            placeholder="175">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Age</label>
+          <input
+            type="number"
+            formControlName="age"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            placeholder="30">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Gender</label>
+          <select
+            formControlName="gender"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+            <option value="">Select Gender</option>
+            <option value="MALE">Male</option>
+            <option value="FEMALE">Female</option>
+            <option value="OTHER">Other</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Activity Level</label>
+          <select
+            formControlName="activityLevel"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+            <option value="">Select Activity Level</option>
+            <option *ngFor="let level of activityLevels" [value]="level">
+              {{ level.replace('_', ' ') }}
+            </option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Goal</label>
+          <select
+            formControlName="goal"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+            <option value="">Select Goal</option>
+            <option *ngFor="let goal of goals" [value]="goal">
+              {{ goal.replace('_', ' ') }}
+            </option>
+          </select>
+        </div>
+
+        <div class="flex space-x-4">
+          <button
+            type="submit"
+            [disabled]="!profileForm.valid"
+            class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50">
+            {{ isEditing ? 'Update Profile' : 'Create Profile' }}
+          </button>
+
+          <button
+            *ngIf="isEditing"
+            type="button"
+            (click)="resetForm()"
+            class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Profile List and Details -->
+    <div class="space-y-6">
+      <!-- Profile List -->
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-xl font-semibold mb-4">Your Profiles</h2>
+        <div *ngIf="profiles.length === 0" class="text-gray-500">
+          No nutrition profiles found. Create your first profile!
+        </div>
+        <div *ngFor="let profile of profiles" class="border-b border-gray-200 pb-4 mb-4 last:border-b-0 last:pb-0 last:mb-0">
+          <div class="flex justify-between items-center">
+            <div
+              class="cursor-pointer hover:bg-gray-50 p-2 rounded"
+              (click)="selectProfile(profile)">
+              <h3 class="font-medium">Profile #{{ profile.id }}</h3>
+              <p class="text-sm text-gray-600">
+                {{ profile.weight }}kg, {{ profile.height }}cm, {{ profile.age }} years old
+              </p>
+            </div>
+            <div class="flex space-x-2">
+              <button
+                (click)="editProfile(profile)"
+                class="text-blue-600 hover:text-blue-800">
+                Edit
+              </button>
+              <button
+                (click)="deleteProfile(profile.id!)"
+                class="text-red-600 hover:text-red-800">
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Current Profile Details -->
+      <div *ngIf="currentProfile" class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-xl font-semibold mb-4">Current Profile Details</h2>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <span class="font-medium">Weight:</span> {{ currentProfile.weight }} kg
+          </div>
+          <div>
+            <span class="font-medium">Height:</span> {{ currentProfile.height }} cm
+          </div>
+          <div>
+            <span class="font-medium">Age:</span> {{ currentProfile.age }} years
+          </div>
+          <div>
+            <span class="font-medium">Gender:</span> {{ currentProfile.gender }}
+          </div>
+          <div>
+            <span class="font-medium">Activity Level:</span> {{ currentProfile.activityLevel?.replace('_', ' ') }}
+          </div>
+          <div>
+            <span class="font-medium">Goal:</span> {{ currentProfile.goal?.replace('_', ' ') }}
+          </div>
+        </div>
+
+        <div *ngIf="currentProfile.dailyCalories" class="mt-4 pt-4 border-t border-gray-200">
+          <h3 class="font-medium mb-2">Nutrition Targets</h3>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <span class="font-medium">Daily Calories:</span> {{ currentProfile.dailyCalories }} kcal
+            </div>
+            <div>
+              <span class="font-medium">Protein:</span> {{ currentProfile.proteinTarget }}g
+            </div>
+            <div>
+              <span class="font-medium">Carbs:</span> {{ currentProfile.carbTarget }}g
+            </div>
+            <div>
+              <span class="font-medium">Fat:</span> {{ currentProfile.fatTarget }}g
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

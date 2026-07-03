@@ -1,0 +1,115 @@
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold mb-8">Meal Plans</h1>
+
+  <!-- Profile Selection -->
+  <div class="mb-6">
+    <label class="block text-sm font-medium text-gray-700 mb-2">Select Nutrition Profile</label>
+    <select
+      [(ngModel)]="selectedProfile"
+      (change)="onProfileChange()"
+      class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+      <option *ngFor="let profile of profiles" [ngValue]="profile">
+        Profile #{{ profile.id }} - {{ profile.weight }}kg, {{ profile.goal?.replace('_', ' ') }}
+      </option>
+    </select>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8" *ngIf="selectedProfile">
+    <!-- Meal Plan Form -->
+    <div class="bg-white p-6 rounded-lg shadow-md">
+      <h2 class="text-xl font-semibold mb-4">Create Meal Plan</h2>
+
+      <form [formGroup]="mealPlanForm" (ngSubmit)="onSubmit()" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Meal Type</label>
+          <select
+            formControlName="mealType"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+            <option value="">Select Meal Type</option>
+            <option *ngFor="let type of mealTypes" [value]="type">
+              {{ getMealTypeLabel(type) }}
+            </option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Recommended Calories</label>
+          <input
+            type="number"
+            formControlName="recommendedCalories"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            placeholder="500">
+        </div>
+
+        <!-- Product Selection -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Select Products</label>
+          <div class="max-h-48 overflow-y-auto border border-gray-300 rounded-md p-2">
+            <div *ngFor="let product of products" class="flex items-center space-x-2 mb-2">
+              <input
+                type="checkbox"
+                [checked]="isProductSelected(product)"
+                (change)="toggleProductSelection(product)"
+                class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+              <span class="text-sm">{{ product.name }} - ${{ product.price }}</span>
+            </div>
+          </div>
+          <p class="text-sm text-gray-600 mt-1">
+            Selected: {{ selectedProducts.length }} products
+          </p>
+        </div>
+
+        <button
+          type="submit"
+          [disabled]="!mealPlanForm.valid"
+          class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50">
+          Create Meal Plan
+        </button>
+      </form>
+    </div>
+
+    <!-- Meal Plans List -->
+    <div class="bg-white p-6 rounded-lg shadow-md">
+      <h2 class="text-xl font-semibold mb-4">Your Meal Plans</h2>
+
+      <div *ngIf="mealPlans.length === 0" class="text-gray-500">
+        No meal plans found for this profile. Create your first meal plan!
+      </div>
+
+      <div *ngFor="let mealPlan of mealPlans" class="border-b border-gray-200 pb-4 mb-4 last:border-b-0 last:pb-0 last:mb-0">
+        <div class="flex justify-between items-start">
+          <div class="flex-1">
+            <h3 class="font-medium text-lg">{{ getMealTypeLabel(mealPlan.mealType) }}</h3>
+            <p class="text-sm text-gray-600 mb-2">
+              {{ mealPlan.recommendedCalories }} calories
+            </p>
+            <div class="text-xs text-gray-500">
+              Created: {{ mealPlan.createdAt | date:'short' }}
+            </div>
+          </div>
+          <button
+            (click)="deleteMealPlan(mealPlan.id!)"
+            class="text-red-600 hover:text-red-800 ml-4">
+            Delete
+          </button>
+        </div>
+
+        <!-- Recommended Products -->
+        <div *ngIf="mealPlan.recommendedProductsIds && mealPlan.recommendedProductsIds.length > 0" class="mt-3">
+          <h4 class="text-sm font-medium text-gray-700 mb-2">Recommended Products:</h4>
+          <div class="flex flex-wrap gap-2">
+            <span
+              *ngFor="let productId of mealPlan.recommendedProductsIds"
+              class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">
+              Product #{{ productId }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!selectedProfile" class="text-center py-8">
+    <p class="text-gray-500">Please create a nutrition profile first to manage meal plans.</p>
+  </div>
+</div>

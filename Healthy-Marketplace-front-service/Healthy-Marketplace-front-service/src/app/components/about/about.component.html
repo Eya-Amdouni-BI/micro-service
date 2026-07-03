@@ -1,0 +1,113 @@
+<div class="pt-24 pb-20">
+  <!-- Hero Section -->
+  <section class="relative h-96 mb-20">
+    <img src="assets/about-hero.jpg" alt="About Us" class="w-full h-full object-cover">
+    <div class="absolute inset-0 bg-green-900 bg-opacity-50 flex items-center justify-center">
+      <div class="text-center text-white animate-fadeInUp">
+        <h1 class="text-5xl font-bold mb-4">About GreenMarket</h1>
+        <p class="text-xl">Bringing fresh, organic produce to your table since 2015</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="max-w-7xl mx-auto px-4">
+    <!-- Our Story -->
+    <section class="mb-20">
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <div class="animate-fadeInLeft">
+          <h2 class="text-3xl font-bold text-gray-800 mb-6">Our Story</h2>
+          <p class="text-gray-600 mb-4 leading-relaxed">
+            GreenMarket started as a small family farm with a big dream - to make organic, 
+            healthy food accessible to everyone. What began as a weekend farmers market 
+            stand has grown into a thriving online marketplace, connecting local farmers 
+            with conscious consumers.
+          </p>
+          <p class="text-gray-600 mb-6 leading-relaxed">
+            Today, we work with over 100 local farmers and producers to bring you the 
+            freshest organic products, delivered right to your doorstep. Our commitment 
+            to sustainability and quality has made us a trusted name in organic food delivery.
+          </p>
+          <div class="flex space-x-4">
+            <div class="text-center">
+              <div class="text-3xl font-bold text-green-600">100+</div>
+              <div class="text-gray-600">Local Farmers</div>
+            </div>
+            <div class="text-center">
+              <div class="text-3xl font-bold text-green-600">50k+</div>
+              <div class="text-gray-600">Happy Customers</div>
+            </div>
+            <div class="text-center">
+              <div class="text-3xl font-bold text-green-600">8</div>
+              <div class="text-gray-600">Cities Served</div>
+            </div>
+          </div>
+        </div>
+        <div class="animate-fadeInRight">
+          <img src="assets/farm-story.jpg" alt="Our Farm" class="rounded-lg shadow-xl">
+        </div>
+      </div>
+    </section>
+
+    <!-- Our Values -->
+    <section class="mb-20">
+      <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Our Values</h2>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div *ngFor="let value of values; let i = index"
+             class="text-center p-6 rounded-xl hover:shadow-xl transition-all 
+                    duration-300 transform hover:-translate-y-2 animate-fadeInUp"
+             [style.animation-delay]="i * 100 + 'ms'">
+          <div class="bg-green-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i [class]="value.icon + ' text-3xl text-green-600'"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-2">{{value.title}}</h3>
+          <p class="text-gray-600">{{value.description}}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Team -->
+    <section class="mb-20">
+      <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Meet Our Team</h2>
+      <div class="grid md:grid-cols-4 gap-8">
+        <div *ngFor="let member of team; let i = index"
+             class="text-center animate-fadeInUp"
+             [style.animation-delay]="i * 100 + 'ms'">
+          <div class="relative group">
+            <img [src]="member.image" [alt]="member.name" 
+                 class="w-48 h-48 rounded-full mx-auto mb-4 object-cover">
+            <div class="absolute inset-0 bg-green-600 bg-opacity-0 rounded-full 
+                        group-hover:bg-opacity-20 transition-all duration-300"></div>
+          </div>
+          <h3 class="text-xl font-semibold">{{member.name}}</h3>
+          <p class="text-green-600 mb-2">{{member.position}}</p>
+          <p class="text-gray-600 text-sm">{{member.bio}}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="bg-green-50 rounded-2xl p-12">
+      <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">What Our Customers Say</h2>
+      <div class="grid md:grid-cols-2 gap-8">
+        <div *ngFor="let testimonial of testimonials; let i = index"
+             class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all 
+                    duration-300 transform hover:-translate-y-1 animate-fadeInUp"
+             [style.animation-delay]="i * 100 + 'ms'">
+          <div class="flex items-center mb-4">
+            <img [src]="testimonial.avatar" alt="" class="w-12 h-12 rounded-full mr-4">
+            <div>
+              <h4 class="font-semibold">{{testimonial.name}}</h4>
+              <div class="flex text-yellow-400">
+                <i *ngFor="let star of [1,2,3,4,5]" 
+                   [class.fas]="star <= testimonial.rating"
+                   [class.far]="star > testimonial.rating"
+                   class="text-sm"></i>
+              </div>
+            </div>
+          </div>
+          <p class="text-gray-600 italic">"{{testimonial.text}}"</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

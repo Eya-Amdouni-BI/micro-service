@@ -1,0 +1,290 @@
+$green: #16a34a;
+$green-dark: #15803d;
+$green-light: #f0fdf4;
+$green-mid: #dcfce7;
+$border: #e5e7eb;
+$text: #111827;
+$muted: #6b7280;
+$bg: #f9fafb;
+$red: #dc2626;
+$radius: 12px;
+$radius-sm: 8px;
+
+.cart-wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem 1rem 4rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+// ─── Header row ────────────────────────────────────────────
+.cart-header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1.75rem;
+
+  h1 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: $text;
+    margin: 0 0 4px;
+  }
+
+  .cart-count {
+    font-size: .875rem;
+    color: $muted;
+    margin: 0;
+  }
+}
+
+.btn-clear {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: 1px solid $border;
+  border-radius: $radius-sm;
+  padding: 7px 13px;
+  font-size: .8rem;
+  color: $muted;
+  cursor: pointer;
+  transition: all .15s;
+  &:hover { border-color: $red; color: $red; background: #fef2f2; }
+}
+
+// ─── Empty ─────────────────────────────────────────────────
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 4rem 0;
+  color: $muted;
+  svg { opacity: .3; }
+  p { font-size: 1rem; margin: 0; }
+}
+
+.btn-shop {
+  background: $green;
+  color: white;
+  border: none;
+  border-radius: $radius-sm;
+  padding: 10px 24px;
+  font-size: .875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s;
+  &:hover { background: $green-dark; }
+}
+
+// ─── Layout ────────────────────────────────────────────────
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 2rem;
+  align-items: start;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ─── Items list ────────────────────────────────────────────
+.items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.item-row {
+  background: white;
+  border: 1px solid $border;
+  border-radius: $radius;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: box-shadow .15s;
+
+  &:hover { box-shadow: 0 4px 12px rgba(0,0,0,.06); }
+}
+
+.item-thumb {
+  width: 52px;
+  height: 52px;
+  border-radius: 10px;
+  background: $green-mid;
+  color: $green-dark;
+  font-size: .85rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.item-info {
+  flex: 1;
+  min-width: 0;
+
+  .item-name {
+    font-size: .95rem;
+    font-weight: 700;
+    color: $text;
+    margin: 0 0 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .item-cat {
+    font-size: .72rem;
+    color: $green-dark;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    margin: 0 0 2px;
+  }
+
+  .item-unit {
+    font-size: .78rem;
+    color: $muted;
+    margin: 0;
+  }
+}
+
+.qty-ctrl {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid $border;
+  border-radius: 20px;
+  padding: 4px 10px;
+  background: $bg;
+
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    color: $muted;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all .15s;
+    &:hover:not(:disabled) { background: $green-mid; color: $green-dark; }
+    &:disabled { opacity: .3; cursor: not-allowed; }
+  }
+
+  span {
+    font-size: .9rem;
+    font-weight: 700;
+    color: $text;
+    min-width: 20px;
+    text-align: center;
+  }
+}
+
+.item-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+
+  .item-total {
+    font-size: 1rem;
+    font-weight: 800;
+    color: $green;
+    margin: 0;
+  }
+}
+
+.remove-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #d1d5db;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  transition: all .15s;
+  &:hover { color: $red; background: #fef2f2; }
+}
+
+// ─── Summary sidebar ───────────────────────────────────────
+.summary-card {
+  background: white;
+  border: 1px solid $border;
+  border-radius: $radius;
+  padding: 1.5rem;
+  position: sticky;
+  top: 1rem;
+
+  h2 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: $text;
+    margin: 0 0 1.25rem;
+  }
+}
+
+.summary-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.summary-line {
+  display: flex;
+  justify-content: space-between;
+  font-size: .875rem;
+  color: $muted;
+
+  &.total {
+    padding-top: 12px;
+    margin-top: 4px;
+    border-top: 1px solid $border;
+    font-size: 1rem;
+    font-weight: 800;
+    color: $text;
+    span:last-child { color: $green; }
+  }
+}
+
+.btn-checkout {
+  width: 100%;
+  background: $green;
+  color: white;
+  border: none;
+  border-radius: $radius-sm;
+  padding: 12px;
+  font-size: .9rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background .15s;
+  margin-bottom: 8px;
+  &:hover { background: $green-dark; }
+}
+
+.btn-continue {
+  width: 100%;
+  background: none;
+  border: 1px solid $border;
+  border-radius: $radius-sm;
+  padding: 10px;
+  font-size: .85rem;
+  color: $muted;
+  cursor: pointer;
+  transition: all .15s;
+  &:hover { border-color: $green; color: $green; background: $green-light; }
+}
