@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.5</version> <!-- Stable version compatible with Spring Cloud 2023.x -->
+        <version>3.2.5</version> <!-- Version compatible avec Spring Cloud 2023.x -->
         <relativePath/>
     </parent>
 
@@ -16,78 +16,89 @@
     <description>diet_microservice</description>
 
     <properties>
-        <!-- Java 17 runtime for the diet microservice -->
+        <!-- Version Java utilisee pour compiler et executer le microservice Diet. -->
         <java.version>17</java.version>
-        <!-- Spring Cloud dependency BOM version -->
+        <!-- Version du BOM Spring Cloud qui aligne les versions des dependances Cloud. -->
         <spring-cloud.version>2023.0.1</spring-cloud.version>
     </properties>
 
     <dependencies>
-        <!-- Web -->
+        <!-- Ajoute Spring MVC pour exposer les controllers REST. -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- JPA -->
+        <!-- Ajoute JPA/Hibernate pour la persistance des entites. -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
+
+        <!-- Client Spring Cloud Config pour lire la configuration distante. -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-config</artifactId>
         </dependency>
-        <!-- H2 In-Memory Database -->
+
+        <!-- Base H2 en memoire, utilisee comme dependance runtime. -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
-        <!-- Sécurité Spring Boot -->
+
+        <!-- Securite Spring Boot pour proteger les endpoints. -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-        <!-- OAuth2 Resource Server (Keycloak) -->
+
+        <!-- Resource Server OAuth2 pour valider les tokens JWT emis par Keycloak. -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
         </dependency>
-        <!-- OIDC / JWT decoding (nécessaire à Keycloak) -->
+
+        <!-- Decodage OIDC/JWT necessaire a la verification cryptographique des tokens. -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-oauth2-jose</artifactId>
         </dependency>
+
+        <!-- AMQP/RabbitMQ pour consommer les evenements de paiement. -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
-        <!-- Validation -->
+
+        <!-- Validation Bean Validation pour les contraintes sur les donnees. -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
-        <!-- Eureka Client -->
+        <!-- Client Eureka pour enregistrer le microservice dans le service discovery. -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
 
-        <!-- Lombok -->
+        <!-- Lombok genere automatiquement getters, setters, constructeurs et builders. -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
 
-        <!-- Test -->
+        <!-- Outils de test Spring Boot et JUnit. -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!-- Interface Swagger/OpenAPI pour documenter et tester les endpoints REST. -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
@@ -97,6 +108,7 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- Importe le BOM Spring Cloud pour centraliser les versions des dependances Cloud. -->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
@@ -109,6 +121,7 @@
 
     <build>
         <plugins>
+            <!-- Configure le compilateur Maven et active l'annotation processing de Lombok. -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -122,6 +135,8 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
+
+            <!-- Plugin Spring Boot qui package l'application en JAR executable. -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

@@ -1,34 +1,34 @@
-# Use Eclipse Temurin OpenJDK 17 for building
+# Image JDK 17 utilisee pour compiler l'application.
 FROM eclipse-temurin:17-jdk-alpine AS build
 
-# Set working directory
+# Repertoire de travail dans l'image de build.
 WORKDIR /app
 
-# Copy Maven wrapper
+# Copie le wrapper Maven pour construire sans Maven installe sur la machine hote.
 COPY mvnw mvnw.cmd ./
 COPY .mvn .mvn
 
-# Copy pom.xml and download dependencies (for better caching)
+# Copie le pom.xml et telecharge les dependances pour profiter du cache Docker.
 COPY pom.xml .
 RUN ./mvnw dependency:go-offline -B
 
-# Copy source code
+# Copie le code source apres les dependances pour eviter de les retelecharger a chaque changement de code.
 COPY src ./src
 
-# Build the application
+# Compile l'application et genere le fichier JAR sans executer les tests.
 RUN ./mvnw clean package -DskipTests
 
-# Use Eclipse Temurin OpenJDK 17 JRE for runtime
+# Image JRE 17 plus legere utilisee uniquement pour l'execution.
 FROM eclipse-temurin:17-jre-alpine
 
-# Set working directory
+# Repertoire de travail dans l'image finale.
 WORKDIR /app
 
-# Copy the built JAR from the build stage
+# Copie le JAR genere depuis l'etape de build vers l'image finale.
 COPY --from=build /app/target/diet_microservice-0.0.1-SNAPSHOT.jar app.jar
 
-# Expose the port the app runs on
+# Expose le port du conteneur. A synchroniser avec server.port si le port applicatif change.
 EXPOSE 8080
 
-# Run the application
+# Commande lancee au demarrage du conteneur.
 ENTRYPOINT ["java", "-jar", "app.jar"]
