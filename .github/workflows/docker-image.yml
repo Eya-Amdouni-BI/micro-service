@@ -13,14 +13,10 @@ jobs:
       matrix:
         service:
           - { name: config-server, context: ./Healthy-Marketplace-main/Healthy-Marketplace-main/config-server }
-          - { name: eureka-server, context: ./Healthy-Marketplace-main/Healthy-Marketplace-main/Eureka-Server }
-          - { name: apigateway, context: ./Healthy-Marketplace-main/Healthy-Marketplace-main/ApiGateway }
           - { name: forum-service, context: ./Healthy-Marketplace-main/Healthy-Marketplace-main/forumService }
           - { name: product-service, context: ./Healthy-Marketplace-main/Healthy-Marketplace-main/ProductService }
           - { name: order-service, context: ./Healthy-Marketplace-main/Healthy-Marketplace-main/OrderService }
           - { name: delivery-service, context: ./Healthy-Marketplace-main/Healthy-Marketplace-main/delivery-service }
-          - { name: log-service, context: ./Healthy-Marketplace-main/Healthy-Marketplace-main/log-service }
-          - { name: diet-service, context: ./Healthy-Marketplace-main/Healthy-Marketplace-main/diet_microservice }
           - { name: review-report-service, context: ./Healthy-Marketplace-main/Healthy-Marketplace-main/ReviewAndReport-Microservice }
           - { name: frontend, context: ./Healthy-Marketplace-front-service/Healthy-Marketplace-front-service }
       fail-fast: false
