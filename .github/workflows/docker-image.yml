@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: CI/CD - Build and Push to Docker Hub
 
 on:
   push:
@@ -7,12 +7,42 @@ on:
     branches: [ "main" ]
 
 jobs:
-
-  build:
-
+  build-and-push:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service:
+          - { name: config-server, context: ./config-server }
+          - { name: eureka-server, context: ./Eureka-Server }
+          - { name: apigateway, context: ./ApiGateway }
+          - { name: forum-service, context: ./forumService }
+          - { name: product-service, context: ./ProductService }
+          - { name: order-service, context: ./OrderService }
+          - { name: delivery-service, context: ./delivery-service }
+          - { name: log-service, context: ./log-service }
+          - { name: diet-service, context: ./diet_microservice }
+          - { name: review-report-service, context: ./ReviewAndReport-Microservice }
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push ${{ matrix.service.name }}
+        uses: docker/build-push-action@v5
+        with:
+          context: ${{ matrix.service.context }}
+          push: ${{ github.event_name == 'push' }}
+          tags: |
+            ghidrrev/healthcare:${{ matrix.service.name }}-latest
+            ghidrrev/healthcare:${{ matrix.service.name }}-${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
